@@ -37,23 +37,15 @@
   gap: 12px;
   margin-bottom: 20px;
   position: relative;
-
-  /* Add subtle animation on group focus */
-  &:focus-within {
-    transform: scale(1.01);
-    transition: transform 0.2s ease;
-  }
-
-  /* Responsive design */
+  
+  &:focus-within { transform: scale(1.01); transition: transform 0.2s ease; }
+  
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: stretch;
     gap: 10px;
-
-    .search-button {
-      width: 100%;
-      justify-content: center;
-    }
+    
+    .search-button { width: 100%; justify-content: center; }
   }
 }
 
@@ -155,14 +147,8 @@
   @media (prefers-color-scheme: dark) {
     color: #6b7280;
 
-    &:hover {
-      background: #4b5563;
-      color: #ef4444;
-    }
-
-    &:active {
-      background: #374151;
-    }
+    &:hover { background: #4b5563; color: #ef4444; }
+    &:active { background: #374151; }
   }
 }
 
@@ -199,15 +185,6 @@
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
-  }
-
-  .loading-spinner {
-    width: 18px;
-    height: 18px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: #ffffff;
-    animation: spin 1s ease-in-out infinite;
   }
 }
 
@@ -305,22 +282,7 @@
   }
 }
 
-/* Duplicate search-button styling removed - using enhanced version above */
 
-.clear-button {
-  position: absolute;
-  right: 15px;
-  background: none;
-  border: none;
-  color: #9ca3af;
-  cursor: pointer;
-  font-size: 18px;
-  padding: 5px;
-
-  &:hover {
-    color: #ef4444;
-  }
-}
 
 /* Search Results */
 .search-results {
@@ -599,7 +561,7 @@
   }
 }
 
-/* Loading Spinner */
+/* Loading Spinner - Consolidated */
 .loading-spinner {
   width: 16px;
   height: 16px;
@@ -609,80 +571,30 @@
   animation: spin 1s ease-in-out infinite;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+.search-button .loading-spinner {
+  width: 18px;
+  height: 18px;
 }
 
-/* Responsive Design */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 @media (max-width: 768px) {
-  .stepper-container {
-    padding: 15px;
-  }
-
-  .stepper-header {
-    padding: 15px;
-    margin-bottom: 30px;
-  }
-
-  .step-connector {
-    width: 60px;
-    margin: 0 10px;
-  }
-
-  .step-panel {
-    padding: 20px;
-  }
-
-  .step-header h2 {
-    font-size: 24px;
-  }
-
-  .search-input {
-    padding: 12px 15px;
-    font-size: 14px;
-  }
-
-  .search-button {
-    padding: 12px 15px;
-    min-width: 50px;
-  }
-
-  .map-container {
-    height: 300px;
-
-    .step2-map & {
-      height: 250px;
-    }
-  }
-
-  .step-actions {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .btn {
-    width: 100%;
-    max-width: 300px;
-  }
+  .stepper-container { padding: 15px; }
+  .stepper-header { padding: 15px; margin-bottom: 30px; }
+  .step-connector { width: 60px; margin: 0 10px; }
+  .step-panel { padding: 20px; }
+  .step-header h2 { font-size: 24px; }
+  .search-input { padding: 12px 15px; font-size: 14px; }
+  .search-button { padding: 12px 15px; min-width: 50px; }
+  .map-container { height: 300px; .step2-map & { height: 250px; } }
+  .step-actions { flex-direction: column; align-items: center; }
+  .btn { width: 100%; max-width: 300px; }
 }
 
 @media (max-width: 480px) {
-  .stepper-header {
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .step-connector {
-    width: 2px;
-    height: 30px;
-    margin: 10px 0;
-  }
-
-  .result-details {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
-  }
+  .stepper-header { flex-direction: column; gap: 20px; }
+  .step-connector { width: 2px; height: 30px; margin: 10px 0; }
+  .result-details { flex-direction: column; align-items: flex-start; gap: 5px; }
 }
