@@ -152,42 +152,60 @@ export class StepperComponent implements OnInit, AfterViewInit {
   }
 
   public addDrawingPoint(latlng: L.LatLng): void {
+    // Check if clicking near the first point to close the polygon
+    if (this.drawingPoints.length >= 2) {
+      const firstPoint = this.drawingPoints[0];
+      const distance = latlng.distanceTo(firstPoint);
+
+      // If within 20 meters of first point, close the polygon
+      if (distance <= 20) {
+        this.finishDrawing();
+        return;
+      }
+    }
+
     this.drawingPoints.push(latlng);
 
-    // Add point marker
+    // Add point marker with special styling for first point
+    const isFirstPoint = this.drawingPoints.length === 1;
     const marker = L.circleMarker(latlng, {
-      radius: 5,
-      fillColor: '#ff7800',
-      color: '#ff7800',
-      weight: 2,
-      opacity: 1,
+      color: isFirstPoint ? '#ff0000' : '#ff7800',
+      fillColor: isFirstPoint ? '#ff0000' : '#ff7800',
       fillOpacity: 0.8,
+      radius: isFirstPoint ? 8 : 6,
+      weight: 2,
     }).addTo(this.drawingLayer);
 
-    // Update drawing polygon
+    // Add tooltip for first point
+    if (isFirstPoint) {
+      marker.bindTooltip('First point - click here again to close polygon', {
+        permanent: false,
+        direction: 'top',
+      });
+    }
+
+    // Update current drawing line
     if (this.currentDrawing) {
       this.drawingLayer.removeLayer(this.currentDrawing);
     }
 
-    if (this.drawingPoints.length >= 2) {
+    if (this.drawingPoints.length > 1) {
       this.currentDrawing = L.polygon(this.drawingPoints, {
-        fillColor: '#ff7800',
         color: '#ff7800',
         weight: 2,
-        opacity: 1,
-        fillOpacity: 0.3,
+        opacity: 0.8,
         dashArray: '5, 5',
       }).addTo(this.drawingLayer);
     }
   }
 
   public finishDrawing(): void {
-    if (this.drawingPoints.length >= 3) {
-      // Create custom territory
+    if (this.drawingPoints.length >= 2) {
+      // Create custom polygon territory
       this.customTerritory = {
         type: 'Feature',
         properties: {
-          name: 'Custom Territory',
+          name: 'Custom Polygon Territory',
           id: 'custom_territory',
           population: 0,
           isCustom: true,
@@ -213,11 +231,13 @@ export class StepperComponent implements OnInit, AfterViewInit {
 
       finalPolygon.bindPopup(`
         <div>
-          <h3>Custom Territory</h3>
+          <h3>Custom Polygon Territory</h3>
           <p>Area: ${this.calculatePolygonArea(this.drawingPoints).toFixed(
             2
           )} km²</p>
-          <p><strong>Custom drawn territory</strong></p>
+          <p><strong>Polygon with ${
+            this.drawingPoints.length
+          } vertices</strong></p>
         </div>
       `);
 
@@ -284,6 +304,20 @@ export class StepperComponent implements OnInit, AfterViewInit {
         }
       });
     }
+  }
+
+  public clearTerritorySelection(): void {
+    this.selectedTerritory = null;
+    this.clearCustomTerritory();
+
+    // Reset all territory layer styles to default
+    this.territoryLayer.eachLayer((layer: any) => {
+      layer.setStyle({
+        fillColor: '#3388ff',
+        color: '#3388ff',
+        fillOpacity: 0.3,
+      });
+    });
   }
 
   // Step 2: Place search methods
@@ -401,24 +435,24 @@ export class StepperComponent implements OnInit, AfterViewInit {
   }
 
   // Utility methods
-  public clearTerritorySelection(): void {
-    this.selectedTerritory = null;
-    // Territory and search cleared
-    this.clearPlaceSearch();
-    this.clearCustomTerritory();
-    this.isDrawingMode = false;
-    this.map.getContainer().style.cursor = '';
+  // public clearTerritorySelection(): void {
+  //   this.selectedTerritory = null;
+  //   // Territory and search cleared
+  //   this.clearPlaceSearch();
+  //   this.clearCustomTerritory();
+  //   this.isDrawingMode = false;
+  //   this.map.getContainer().style.cursor = '';
 
-    this.territoryLayer.eachLayer((layer: any) => {
-      layer.setStyle({
-        fillColor: '#3388ff',
-        color: '#3388ff',
-        fillOpacity: 0.3,
-      });
-    });
+  //   this.territoryLayer.eachLayer((layer: any) => {
+  //     layer.setStyle({
+  //       fillColor: '#3388ff',
+  //       color: '#3388ff',
+  //       fillOpacity: 0.3,
+  //     });
+  //   });
 
-    this.map.fitBounds(this.territoryLayer.getBounds());
-  }
+  //   this.map.fitBounds(this.territoryLayer.getBounds());
+  // }
 
   public clearPlaceSearch(): void {
     this.placeSearchQuery = '';
