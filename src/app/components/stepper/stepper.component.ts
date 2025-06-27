@@ -231,7 +231,7 @@ export class StepperComponent implements OnInit, AfterViewInit {
 
       finalPolygon.bindPopup(`
         <div>
-          <h3>Custom Polygon Territory</h3>
+          <h3>Your Territory</h3>
           <p>Area: ${this.calculatePolygonArea(this.drawingPoints).toFixed(
             2
           )} km²</p>
@@ -399,10 +399,10 @@ export class StepperComponent implements OnInit, AfterViewInit {
     );
 
     if (isInside) {
-      this.territoryValidationResult = `"${placeName}" is within ${this.selectedTerritory.properties.name}`;
+      this.territoryValidationResult = `"${placeName}" is within your territory`;
       this.validationStatus = 'success';
     } else {
-      this.territoryValidationResult = `"${placeName}" is NOT within ${this.selectedTerritory.properties.name}`;
+      this.territoryValidationResult = `"${placeName}" is NOT within your territory`;
       this.validationStatus = 'error';
     }
   }

@@ -1,0 +1,93 @@
+<div class="maps-container">
+  <!-- Territory Search Section -->
+  <div class="search-section territory-search">
+    <h4 class="search-title">🏛️ Search Territories</h4>
+    <div class="search-input-container">
+      <input 
+        type="text" 
+        [(ngModel)]="searchQuery" 
+        (input)="searchTerritories()" 
+        placeholder="Search territories..."
+        class="search-input"
+      />
+      <button 
+        *ngIf="searchQuery" 
+        (click)="clearSelection()" 
+        class="clear-button"
+      >
+        ✕
+      </button>
+    </div>
+    
+    <!-- Territory Search Results Dropdown -->
+    <div *ngIf="searchResults.length > 0" class="search-results">
+      <div 
+        *ngFor="let territory of searchResults" 
+        (click)="selectSearchResult(territory)"
+        class="search-result-item"
+      >
+        <strong>{{ territory.properties.name }}</strong>
+        <small>Population: {{ territory.properties.population | number }}</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Place Search Section -->
+  <div class="search-section place-search">
+    <h4 class="search-title">📍 Search Places</h4>
+    <div class="search-input-container">
+      <input 
+        type="text" 
+        [(ngModel)]="placeSearchQuery" 
+        (input)="searchPlaces()" 
+        placeholder="Search for places, addresses, landmarks..."
+        class="search-input"
+        [disabled]="isSearchingPlaces"
+      />
+      <button 
+        *ngIf="placeSearchQuery" 
+        (click)="clearPlaceSearch()" 
+        class="clear-button"
+      >
+        ✕
+      </button>
+      <div *ngIf="isSearchingPlaces" class="loading-indicator">🔍</div>
+    </div>
+    
+    <!-- Place Search Results Dropdown -->
+    <div *ngIf="placeSearchResults.length > 0" class="search-results">
+      <div 
+        *ngFor="let place of placeSearchResults" 
+        (click)="selectPlace(place)"
+        class="search-result-item place-result"
+      >
+        <strong>{{ place.display_name }}</strong>
+        <small>{{ place.type | titlecase }}</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Territory Warning -->
+  <div *ngIf="territoryWarning" class="territory-warning" [ngClass]="{
+    'warning-success': territoryWarning.includes('✅'),
+    'warning-error': territoryWarning.includes('❌'),
+    'warning-info': territoryWarning.includes('⚠️')
+  }">
+    <div class="warning-content">
+      <span class="warning-text">{{ territoryWarning }}</span>
+      <button (click)="dismissWarning()" class="dismiss-warning-btn">✕</button>
+    </div>
+  </div>
+
+  <!-- Selected Territory Info -->
+  <div *ngIf="selectedTerritory" class="territory-info">
+    <h3>{{ selectedTerritory.properties.name }}</h3>
+    <p>Population: {{ selectedTerritory.properties.population | number }}</p>
+    <button (click)="clearSelection()" class="clear-selection-btn">
+      Clear Selection
+    </button>
+  </div>
+
+  <!-- Map Container -->
+  <div #mapContainer class="map-container"></div>
+</div>
