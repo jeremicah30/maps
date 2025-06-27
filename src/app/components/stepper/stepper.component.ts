@@ -32,7 +32,7 @@ export class StepperComponent implements OnInit, AfterViewInit {
   public isDrawingMode: boolean = false;
   public customTerritory: any = null;
   private drawingLayer: L.LayerGroup = new L.LayerGroup();
-  private currentDrawing: L.Polygon | null = null;
+  private currentDrawing: L.Polygon | L.Polyline | null = null;
   public drawingPoints: L.LatLng[] = [];
 
   // Step 2: Place search
@@ -190,7 +190,7 @@ export class StepperComponent implements OnInit, AfterViewInit {
     }
 
     if (this.drawingPoints.length > 1) {
-      this.currentDrawing = L.polygon(this.drawingPoints, {
+      this.currentDrawing = L.polyline(this.drawingPoints, {
         color: '#ff7800',
         weight: 2,
         opacity: 0.8,
