@@ -51,16 +51,26 @@
         <div class="instruction-card">
           <h4>🎯 Custom Polygon Drawing Instructions</h4>
           <ul>
-            <li>Click on the map to place as many points as you want for your polygon</li>
+            <li>
+              Click on the map to place as many points as you want for your
+              polygon
+            </li>
             <li>The first point will be highlighted in red</li>
-            <li>After placing at least 2 points, click on the first point again to close the polygon</li>
+            <li>
+              After placing at least 2 points, click on the first point again to
+              close the polygon
+            </li>
             <li>You can add unlimited points before closing</li>
           </ul>
           <p class="current-points">
             Current points: <strong>{{ drawingPoints.length }}</strong>
-            <span *ngIf="drawingPoints.length === 0"> - Click to start drawing</span>
+            <span *ngIf="drawingPoints.length === 0">
+              - Click to start drawing</span
+            >
             <span *ngIf="drawingPoints.length === 1"> - Place more points</span>
-            <span *ngIf="drawingPoints.length >= 2"> - Click 1st point to close or add more points</span>
+            <span *ngIf="drawingPoints.length >= 2">
+              - Click 1st point to close or add more points</span
+            >
           </p>
         </div>
       </div>
@@ -106,7 +116,7 @@
 
     <!-- Place Search Section -->
     <div class="search-section" *ngIf="selectedTerritory">
-      <h3>📍 Search Places in {{ selectedTerritory?.properties.name }}</h3>
+      <h3>Search Places in {{ selectedTerritory?.properties.name }}</h3>
       <div class="search-input-group">
         <div class="input-wrapper">
           <input
